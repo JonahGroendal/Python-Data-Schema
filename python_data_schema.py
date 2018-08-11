@@ -1,3 +1,5 @@
+__author__ = "Jonah Groendal"
+
 #################
 # Decorators
 #################
@@ -36,9 +38,9 @@ def translate_shorthand_syntax(key_value_validators):
 ########################
 
 ### Logical operator ###
-# Each combines validators and returns a validator
 @canonicalize_args(if_dict=eval_function_argument_pairs)
 def and_(validators):
+    'ands together validators'
     def validator(data):
         for val in validators:
             if not val(data):
@@ -48,6 +50,7 @@ def and_(validators):
 ### Logical operator ###
 @canonicalize_args(if_dict=translate_shorthand_syntax)
 def or_(validators):
+    'ors together validators'
     def validator(data):
         for val in validators:
             if val(data):
