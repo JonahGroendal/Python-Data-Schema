@@ -1,11 +1,11 @@
 ### Python Data Schema
-is a library for defining and validating data structures in Python. It's fairly minimal, so simply copying data_schema.py into your project should work.
+is a library for defining and validating data structures in Python. It's fairly minimal, so simply copying python_data_schema.py into your project should work.
 
 The modular set of function-returning functions that is this library may be used to create a function that validates some data (typically before inserting it into a database). For example, a validation function for a MongoDB collection can be created by defining a list of dictionaries. Take a look at example.py for a complete example.
 
 A "Validator function" (or "validator") is a function that takes one argument, which is data to be validated, and returns a boolean value.
 
-A "Validator generator" is a function that returns a validator function. (Ex. ```equals_```, ```and_```) (These are not generators in the Python sense of the word, only in the sense that they generate another function)
+A "Validator generator" is a function that returns a validator function. (Ex. ```equals_()```, ```and_()```) (These are not generators in the Python sense of the word, only in the sense that they generate another function)
 
 Basic example:
 ```python
@@ -58,4 +58,4 @@ dict_validator = and_(type_is_(dict), for_each_item_(short_or_syntax))
 test_data = {"sequence": "FLPAIAGILSQLF", "hydrophobicity": 0.769231}
 print(dict_validator(test_data)) # True
 ```
-Note: Every function that takes multiple arguments may also take a list of arguments
+Note: Any function that takes multiple arguments may also take a list of arguments
