@@ -3,9 +3,9 @@ is a library for defining and validating data structures in Python. The "schema"
 
 The modular set of function-returning functions that is this library may be used to create a function that validates some data (typically before inserting it into a database). For example, a validation function for a MongoDB collection can be created by defining a list of dictionaries. Take a look at example.py for a complete example.
 
-A "validator function" (or "validation function") is a function that takes one argument, which is data to be validated, and returns a boolean value.
+A "validation function" (or "validator") is a function that takes one argument, which is data to be validated, and returns a boolean value.
 
-A "validator generator" is a function that returns a validator function. (Ex. ```equals_()```, ```and_()```) (These are not generators in the Python sense of the word, only in the sense that they generate another function)
+A "validator generator" is a function that returns a validation function. (Ex. ```equals_()```, ```and_()```) (These are not generators in the Python sense of the word, only in the sense that they generate another function)
 
 Basic example:
 ```python
