@@ -1,11 +1,11 @@
 ### Python Data Schema
-is a library for defining and validating data structures in Python. It's fairly minimal, so simply copying python_data_schema.py into your project should work.
+is a library for defining and validating data structures in Python. The "schema" is actually just very readable pyhton code that compiles into a validation function. It's fairly minimal, so simply copying python_data_schema.py into your project should work.
 
 The modular set of function-returning functions that is this library may be used to create a function that validates some data (typically before inserting it into a database). For example, a validation function for a MongoDB collection can be created by defining a list of dictionaries. Take a look at example.py for a complete example.
 
-A "Validator function" (or "validator") is a function that takes one argument, which is data to be validated, and returns a boolean value.
+A "validator function" (or "validation function") is a function that takes one argument, which is data to be validated, and returns a boolean value.
 
-A "Validator generator" is a function that returns a validator function. (Ex. ```equals_()```, ```and_()```) (These are not generators in the Python sense of the word, only in the sense that they generate another function)
+A "validator generator" is a function that returns a validator function. (Ex. ```equals_()```, ```and_()```) (These are not generators in the Python sense of the word, only in the sense that they generate another function)
 
 Basic example:
 ```python
@@ -29,7 +29,7 @@ print(is_primary_color("red"), is_primary_color("cyan")) # True False
 
 Defining a list using ```for_each_item_()```:
 ```python
-# and_(v1, v2, v3) == and_([v1, v2, v3])
+# note: and_(v1, v2, v3) == and_([v1, v2, v3])
 is_list_of_ints = and_(type_is_(list), for_each_item_(type_is_(int)))
 print(is_list_of_ints([1, 2, 3, "Sam"])) # False
 ```
