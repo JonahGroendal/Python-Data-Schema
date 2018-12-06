@@ -1,5 +1,5 @@
 ### Python Data Schema
-is a library for defining and validating data structures in Python. The "schema" is actually just a pyhton code expression that evaluates to a boolean validation function. It's fairly minimal, so simply copying python_data_schema.py into your project should work.
+is a library for defining and validating recursive data structures in Python using functional programming. The "schema" is actually just a pyhton code expression that evaluates to a boolean validation function. It's fairly minimal, so simply copying python_data_schema.py into your project should work.
 
 The modular set of function-returning functions that is this library may be used to create a function that validates some data (typically before inserting it into a database). For example, a validation function for a MongoDB collection can be created by defining a list of dictionaries. Take a look at example.py for a complete example.
 
