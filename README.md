@@ -1,4 +1,4 @@
-### Python Data Schema
+# Python Data Schema
 is a library for defining and validating recursive data structures in Python using functional programming. The "schema" is actually just a pyhton code expression that evaluates to a boolean validation function. It's fairly minimal, so simply copying python_data_schema.py into your project should work.
 
 The modular set of function-returning functions that is this library may be used to create a function that validates some data (typically before inserting it into a database). For example, a validation function for a MongoDB collection can be created by defining a list of dictionaries. Take a look at example.py for a complete example.
@@ -7,14 +7,22 @@ A "validation function" (or "validator") is a function that takes one argument, 
 
 A "validator generator" is a function that returns a validation function. (Ex. ```equals_()```, ```and_()```) (These are not generators in the Python sense of the word, only in the sense that they generate another function)
 
-Basic example:
+## Basic example:
 ```python
 # ValidatorFunction = validatorGenerator(value)
-is_a_string = type_is_(str)
+is_5 = is_(5)
+print(is_5(4)) # False
+print(is_(5)(5)) #True
+```
+
+## Using validator modifiers:
+```python
+# Call type() on data before validating it with the validator is_(str)
+is_a_string = data_(type)(is_(str))
 print(is_a_string("indeed")) # True
 ```
 
-Combine validators with the validator generators ```and_()``` and ```or_()```:
+## Combine validators with the validator generators ```and_()``` and ```or_()```:
 ```python
 is_primary_color = and_([
   type_is_(str),
@@ -27,14 +35,14 @@ is_primary_color = and_([
 print(is_primary_color("red"), is_primary_color("cyan")) # True False
 ```
 
-Defining a list using ```for_each_item_()```:
+## Defining a list using ```for_each_item_()```:
 ```python
 # note: and_(v1, v2, v3) == and_([v1, v2, v3])
 is_list_of_ints = and_(type_is_(list), for_each_item_(type_is_(int)))
 print(is_list_of_ints([1, 2, 3, "Sam"])) # False
 ```
 
-Defining a dictionary using ```for_each_item_()``` and ```or_()```:
+## Defining a dictionary using ```for_each_item_()``` and ```or_()```:
 ```python
 short_or_syntax = or_({
     # key validator: value validator
@@ -43,8 +51,8 @@ short_or_syntax = or_({
 })
 long_or_syntax = or_([
     and_([
-        key(equals_("sequence")),
-        value(type_is_(str))
+        key_(equals_("sequence")),
+        value_(type_is_(str))
     ]),
     and_([
         lambda key,value: key == "hydrophobicity",
