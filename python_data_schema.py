@@ -1,8 +1,8 @@
 __author__ = "Jonah Groendal"
 
-#################
-# Decorators
-#################
+#################################
+# Decorators for and_() and or_()
+#################################
 
 def canonicalize_args(if_dict):
     'Returns a list of validators (functions that take one argument and return a boolean)'
@@ -33,11 +33,30 @@ def translate_shorthand_syntax(key_value_validators):
     return args
 
 
-########################
+###########################################################
 # Validator generators  (Each returns a validator function)
-########################
+###########################################################
 
-### Logical operator ###
+def is_(value):
+	def validator(data):
+		return data is value
+	return validator
+
+def equals_(value):
+	def validator(data):
+		return data == value
+	return validator
+
+def greater_than_(value):
+	def validator(data):
+		return data > value
+	return validator
+
+def less_than_(value):
+	def validator(data):
+		return data < value
+	return validator
+
 @canonicalize_args(if_dict=eval_function_argument_pairs)
 def and_(validators):
     'ands together validators'
@@ -47,7 +66,7 @@ def and_(validators):
                 return False
         return True
     return validator
-### Logical operator ###
+
 @canonicalize_args(if_dict=translate_shorthand_syntax)
 def or_(validators):
     'ors together validators'
@@ -60,28 +79,39 @@ def or_(validators):
 
 def for_each_item_(element_validator):
     'for each item in data (list or dict)'
-    def anonymous(list_or_dict_data):
+    def validator(list_or_dict_data):
         if type_is_(dict)(list_or_dict_data):
             list_or_dict_data = list_or_dict_data.items()
         return all(map(element_validator, list_or_dict_data))
-    return anonymous
+    return validator
 
-equals_ = lambda value: lambda data: data == value
-
-is_ =     lambda value: lambda data: data is value
-
-type_is_ = lambda value: lambda data: type(data) is value
+# Predefined example of how to use data_()
+def type_is_(value):
+	return data_(type)(is_(value))
 
 
-######################
-# Validator modifiers (returns a validator)
-######################
+##########################################################################
+# Validator data modifiers (modifies data before it's passed to validator)
+##########################################################################
+
+def data_(data_modifier):
+	def wrapper(validation_func):
+		def validator(data):
+			return validation_func(data_modifier(data))
+		return validator
+	return wrapper
+
 def key_(validation_func):
-    def wrapper(data):
-        return validation_func(data[0])
-    return wrapper
+	return data_(atIndex(0))(validation_func)
 
 def value_(validation_func):
-    def wrapper(data):
-        return validation_func(data[1])
-    return wrapper
+	return data_(atIndex(1))(validation_func)
+
+
+##########################################
+# data_modifier funcs for use with data_()
+##########################################
+
+def atIndex(i):
+	return lambda data: data[i]
+
